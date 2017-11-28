@@ -1,0 +1,53 @@
+typedef struct {
+    int front, rear;
+    int *item;
+    int maxsize;
+} MyStack;
+
+/** Initialize your data structure here. */
+MyStack* myStackCreate(int maxSize) {
+    MyStack *q = (MyStack *)malloc(sizeof(MyStack));
+    q->item = (int *)malloc(sizeof(int) * maxSize);
+    q->front = q->rear = 0;
+    q->maxsize = maxSize;
+    return  q;
+}
+
+/** Push element x onto stack. */
+void myStackPush(MyStack* obj, int x) {
+    if((obj->rear+1) % obj->maxsize == obj->front)  return ;
+    obj->item[obj->rear++] = x;
+    obj->rear %= obj->maxsize;
+}
+
+/** Removes the element on top of the stack and returns that element. */
+int myStackPop(MyStack* obj) {
+    if(!obj || obj->front == obj->rear)  return NULL;
+    obj->rear = (obj->rear+obj->maxsize-1) % obj->maxsize;
+    return obj->item[obj->rear];
+}
+
+/** Get the top element. */
+int myStackTop(MyStack* obj) {
+    int site = (obj->rear+obj->maxsize-1)%obj->maxsize;
+    return obj->item[site];
+}
+
+/** Returns whether the stack is empty. */
+bool myStackEmpty(MyStack* obj) {
+    return obj->front == obj->rear;
+}
+
+void myStackFree(MyStack* obj) {
+    free(obj);
+}
+
+/**
+ * Your MyStack struct will be instantiated and called as such:
+ * struct MyStack* obj = myStackCreate(maxSize);
+ * myStackPush(obj, x);
+ * int param_2 = myStackPop(obj);
+ * int param_3 = myStackTop(obj);
+ * bool param_4 = myStackEmpty(obj);
+ * myStackFree(obj);
+ */
